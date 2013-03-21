@@ -23,6 +23,7 @@ namespace AI_project
         {
             setLocations(locations);
             setConnections(connections);
+            mapCities();
         }
 
         #region public methods
@@ -30,6 +31,7 @@ namespace AI_project
         {
             setLocations(locations);
             setConnections(connections);
+            mapCities();
         }
 
         public void buildPath()
@@ -104,7 +106,7 @@ namespace AI_project
                     {
 
                         //add the neighbors the city has
-                        for (int j = 2; i < numNeighbors; j++)
+                        for (int j = 2; j < numNeighbors; j++)
                         {
                             neighbor = str[j];
 
@@ -154,9 +156,9 @@ namespace AI_project
 
         public int findPath(string start, string finish, string omit, string heuristicType)
         {
-            if (heuristicType == "Shortest Distance")
+            if (heuristicType == "Straight Line Distance")
             {
-                return AStar_ShortestDistance(start, finish, omit);
+                return AStar_StraightLineDistance(start, finish, omit);
             }
             else
                 return AStar_FewestLinks(start, finish, omit);
@@ -183,9 +185,18 @@ namespace AI_project
             }
         }
 
-        public List<City> getCities()
+        public List<string> getCities()
         {
-            return cities;
+            List<string> ct = new List<string>();
+
+            foreach (City city in cities)
+            {
+                ct.Add(city.getCityName());
+
+            }
+
+            ct.Sort();
+            return ct;
         }
 
         #endregion
@@ -233,7 +244,7 @@ namespace AI_project
             return 0;
         }
 
-        private int AStar_ShortestDistance(string start, string finish, string omit)
+        private int AStar_StraightLineDistance(string start, string finish, string omit)
         {
 	        startCity = start; endCity = finish; omitCity = omit;
 

@@ -30,6 +30,8 @@ namespace AI_project
             cbStartCity.IsEnabled = false;
             cbEndCity.IsEnabled = false;
             cbOmitCity.IsEnabled = false;
+
+            btnFindPath.IsEnabled = false;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -80,16 +82,63 @@ namespace AI_project
             map.buildMap(tbLoc.Text, tbConn.Text);
 
             cbHeuristic.IsEnabled = true;
-            cbHeuristic.Items.Add("Straight line distance");
-            cbHeuristic.Items.Add("Fewest links");
+            cbHeuristic.Items.Add("Straight Line Distance");
+            cbHeuristic.Items.Add("Fewest Links");
 
             cbStartCity.IsEnabled = true;
             cbEndCity.IsEnabled = true;
             cbOmitCity.IsEnabled = true;
 
+            List<string> cities = map.getCities();
 
+            foreach (string city in cities)
+            {
+                cbStartCity.Items.Add(city);
+                cbEndCity.Items.Add(city);
+                cbOmitCity.Items.Add(city);                
+            }
         }
 
-       
+        private void cbHeuristic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
+                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+            {
+                btnFindPath.IsEnabled = true;
+            }
+        }
+
+        private void cbStartCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
+                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+            {
+                btnFindPath.IsEnabled = true;
+            }
+        }
+
+        private void cbEndCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
+                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+            {
+                btnFindPath.IsEnabled = true;
+            }
+        }
+
+        private void cbOmitCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
+                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+            {
+                btnFindPath.IsEnabled = true;
+            }
+        }
+
+        private void btnFindPath_Click(object sender, RoutedEventArgs e)
+        {
+            map.findPath(cbStartCity.SelectedValue.ToString(), cbEndCity.SelectedValue.ToString(),
+                cbOmitCity.SelectedValue.ToString(), cbHeuristic.SelectedValue.ToString());
+        }       
     }
 }

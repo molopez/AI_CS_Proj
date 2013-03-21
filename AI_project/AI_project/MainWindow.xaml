@@ -10,15 +10,16 @@
         <TextBox x:Name="tbConn" HorizontalAlignment="Left" Height="23" Margin="185,84,0,0" VerticalAlignment="Top" Width="224"/>
         <TextBox x:Name="tbLoc" HorizontalAlignment="Left" Height="23" Margin="185,49,0,0" VerticalAlignment="Top" Width="224"/>
         <Button x:Name="btnBuildMap" Content="Build Map" HorizontalAlignment="Left" Margin="50,128,0,0" VerticalAlignment="Top" Width="72" Click="btnBuildMap_Click"/>
-        <ComboBox x:Name="cbHeuristic" HorizontalAlignment="Left" Margin="679,50,0,0" VerticalAlignment="Top" Width="170"/>
+        <ComboBox x:Name="cbHeuristic" HorizontalAlignment="Left" Margin="679,50,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="cbHeuristic_SelectionChanged"/>
         <TextBlock x:Name="txtHeuristic" HorizontalAlignment="Left" Margin="569,55,0,0" TextWrapping="Wrap" Text="Select heuristic" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtSelCities" HorizontalAlignment="Left" Margin="692,92,0,0" TextWrapping="Wrap" Text="Select cities to find path" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cbStartCity" HorizontalAlignment="Left" Margin="610,128,0,0" VerticalAlignment="Top" Width="66"/>
-        <ComboBox x:Name="cbEndCity" HorizontalAlignment="Left" Margin="753,128,0,0" VerticalAlignment="Top" Width="66"/>
-        <ComboBox x:Name="cbOmitCity" HorizontalAlignment="Left" Margin="906,128,0,0" VerticalAlignment="Top" Width="66"/>
+        <ComboBox x:Name="cbStartCity" HorizontalAlignment="Left" Margin="610,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbStartCity_SelectionChanged"/>
+        <ComboBox x:Name="cbEndCity" HorizontalAlignment="Left" Margin="753,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbEndCity_SelectionChanged"/>
+        <ComboBox x:Name="cbOmitCity" HorizontalAlignment="Left" Margin="906,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbOmitCity_SelectionChanged"/>
         <TextBlock x:Name="txtStartCity" HorizontalAlignment="Left" Margin="569,132,0,0" TextWrapping="Wrap" Text="Start" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtEndCity" HorizontalAlignment="Left" Margin="718,132,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtOmitCity" HorizontalAlignment="Left" Margin="864,131,0,0" TextWrapping="Wrap" Text="Omit" VerticalAlignment="Top"/>
+        <Button x:Name="btnFindPath" Content="Find Path" HorizontalAlignment="Left" Margin="154,128,0,0" VerticalAlignment="Top" Width="75" Click="btnFindPath_Click"/>
 
     </Grid>
 </Window>
