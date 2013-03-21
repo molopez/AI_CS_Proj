@@ -12,7 +12,7 @@ namespace AI_project
         private int xCoordinate, yCoordinate;
         private double distanceTraveled;
         private bool visited, omitted, deadEnd;
-        private Dictionary<string, double> Neighbor;
+        private Dictionary<string, double> Neighbor = new Dictionary<string, double>();
 
         public City() // Constructor
         {
@@ -30,6 +30,7 @@ namespace AI_project
 	        distanceTraveled = 0;
         }
 
+        #region public methods
         public void addNeighbor(string cityName, int x, int y) 
         {
 	        Neighbor.Add(cityName, calculateDistance(x,y));
@@ -85,11 +86,6 @@ namespace AI_project
 	        return distanceTraveled;
         }
 
-        double  calculateDistance(int x, int y)
-        {
-	        return Math.Sqrt(Math.Pow(xCoordinate - x,2) + Math.Pow(yCoordinate - y,2));
-        }
-
         public override string ToString()
         {
 	        return cityName + " " + xCoordinate + " " + yCoordinate;
@@ -124,5 +120,15 @@ namespace AI_project
         {
 	        return Neighbor;
         }
+
+        #endregion
+
+        #region private methods
+        private double calculateDistance(int x, int y)
+        {
+            return Math.Sqrt(Math.Pow(xCoordinate - x, 2) + Math.Pow(yCoordinate - y, 2));
+        }
+
+        #endregion
     }
 }
