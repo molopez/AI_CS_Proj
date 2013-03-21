@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="AStar" Height="689" Width="1122">
     <Grid>
-        <Button x:Name="btnLoc" Content="Select" HorizontalAlignment="Left" Margin="426,49,0,0" VerticalAlignment="Top" Width="72" Click="Button_Click_1"/>
-        <Button x:Name="btnConn" Content="Select" HorizontalAlignment="Left" Margin="426,86,0,0" VerticalAlignment="Top" Width="72" Click="btnConn_Click"/>
-        <Label x:Name="lblLoc" Content="Select locations file" HorizontalAlignment="Left" Margin="50,44,0,0" VerticalAlignment="Top" Width="107"/>
-        <Label x:Name="lblConn" Content="Select connection file" HorizontalAlignment="Left" Margin="50,82,0,0" VerticalAlignment="Top" Width="119"/>
-        <TextBox x:Name="tbConn" HorizontalAlignment="Left" Height="23" Margin="185,84,0,0" VerticalAlignment="Top" Width="224"/>
-        <TextBox x:Name="tbLoc" HorizontalAlignment="Left" Height="23" Margin="185,49,0,0" VerticalAlignment="Top" Width="224"/>
+        <Button x:Name="btnLoc" Content="Select" HorizontalAlignment="Left" Margin="457,49,0,0" VerticalAlignment="Top" Width="78" Click="Button_Click_1"/>
+        <Button x:Name="btnConn" Content="Select" HorizontalAlignment="Left" Margin="457,86,0,0" VerticalAlignment="Top" Width="78" Click="btnConn_Click"/>
+        <Label x:Name="lblLoc" Content="Select locations file" HorizontalAlignment="Left" Margin="50,44,0,0" VerticalAlignment="Top" Width="116"/>
+        <Label x:Name="lblConn" Content="Select connection file" HorizontalAlignment="Left" Margin="50,82,0,0" VerticalAlignment="Top" Width="129"/>
+        <TextBox x:Name="tbConn" HorizontalAlignment="Left" Height="23" Margin="196,84,0,0" VerticalAlignment="Top" Width="243"/>
+        <TextBox x:Name="tbLoc" HorizontalAlignment="Left" Height="23" Margin="196,49,0,0" VerticalAlignment="Top" Width="243"/>
         <Button x:Name="btnBuildMap" Content="Build Map" HorizontalAlignment="Left" Margin="50,128,0,0" VerticalAlignment="Top" Width="72" Click="btnBuildMap_Click"/>
         <ComboBox x:Name="cbHeuristic" HorizontalAlignment="Left" Margin="679,50,0,0" VerticalAlignment="Top" Width="170" SelectionChanged="cbHeuristic_SelectionChanged"/>
         <TextBlock x:Name="txtHeuristic" HorizontalAlignment="Left" Margin="569,55,0,0" TextWrapping="Wrap" Text="Select heuristic" VerticalAlignment="Top"/>
@@ -21,6 +21,7 @@
         <Button x:Name="btnFindPath" Content="Find Path" HorizontalAlignment="Left" Margin="154,128,0,0" VerticalAlignment="Top" Width="75" Click="btnFindPath_Click"/>
         <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="380" Margin="50,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
         <ListBox x:Name="listboxOmitCities" HorizontalAlignment="Left" Height="70" Margin="909,104,0,0" VerticalAlignment="Top" Width="66" SelectedIndex="0" SelectionMode="Extended"/>
+        <TextBlock HorizontalAlignment="Left" Margin="301,10,0,0" TextWrapping="Wrap" Text="Program finds a path from one node to another node using  the specified heuristic" VerticalAlignment="Top" FontStyle="Oblique" FontWeight="ExtraBold"/>
 
     </Grid>
 
