@@ -89,13 +89,23 @@ namespace AI_project
             cbEndCity.IsEnabled = true;
             cbOmitCity.IsEnabled = true;
 
-            List<string> cities = map.getCities();
+            List<City> cities = map.getCities();
+            List<string> ct = new List<string>();
 
-            foreach (string city in cities)
+            //create new list of strings of cities names
+            foreach (City city in cities)
             {
-                cbStartCity.Items.Add(city);
-                cbEndCity.Items.Add(city);
-                cbOmitCity.Items.Add(city);                
+                ct.Add(city.getCityName());
+            }
+
+            //sort the list and fill comboboxes
+            ct.Sort();
+
+            foreach (string str in ct)
+            {
+                cbStartCity.Items.Add(str);
+                cbEndCity.Items.Add(str);
+                cbOmitCity.Items.Add(str);                
             }
         }
 
