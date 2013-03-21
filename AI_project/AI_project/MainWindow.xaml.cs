@@ -76,10 +76,12 @@ namespace AI_project
 
         private void btnBuildMap_Click(object sender, RoutedEventArgs e)
         {
-            //string loc = tbLoc.Text;
-            //string conn = tbConn.Text;
-
             map.buildMap(tbLoc.Text, tbConn.Text);
+
+            cbHeuristic.Items.Clear();
+            cbStartCity.Items.Clear();
+            cbEndCity.Items.Clear();
+            cbOmitCity.Items.Clear();
 
             cbHeuristic.IsEnabled = true;
             cbHeuristic.Items.Add("Straight Line Distance");
@@ -101,12 +103,20 @@ namespace AI_project
             //sort the list and fill comboboxes
             ct.Sort();
 
+            cbOmitCity.Items.Add("none");
+           
             foreach (string str in ct)
             {
                 cbStartCity.Items.Add(str);
                 cbEndCity.Items.Add(str);
                 cbOmitCity.Items.Add(str);                
             }
+
+            cbHeuristic.SelectedIndex = 0;
+            cbStartCity.SelectedIndex = 0;
+            cbEndCity.SelectedIndex = 0;
+            cbOmitCity.SelectedIndex = 0;
+            
         }
 
         private void cbHeuristic_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -147,8 +157,17 @@ namespace AI_project
 
         private void btnFindPath_Click(object sender, RoutedEventArgs e)
         {
-            map.findPath(cbStartCity.SelectedValue.ToString(), cbEndCity.SelectedValue.ToString(),
+            txtboxPath.Clear();
+
+           int x = map.findPath(cbStartCity.SelectedValue.ToString(), cbEndCity.SelectedValue.ToString(),
                 cbOmitCity.SelectedValue.ToString(), cbHeuristic.SelectedValue.ToString());
+
+            List<string> path = map.showPath();
+
+            foreach (string str in path)
+            {
+                txtboxPath.AppendText(str + "\n");
+            }
         }       
     }
 }

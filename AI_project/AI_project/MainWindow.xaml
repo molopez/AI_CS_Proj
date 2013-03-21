@@ -20,6 +20,7 @@
         <TextBlock x:Name="txtEndCity" HorizontalAlignment="Left" Margin="718,132,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtOmitCity" HorizontalAlignment="Left" Margin="864,131,0,0" TextWrapping="Wrap" Text="Omit" VerticalAlignment="Top"/>
         <Button x:Name="btnFindPath" Content="Find Path" HorizontalAlignment="Left" Margin="154,128,0,0" VerticalAlignment="Top" Width="75" Click="btnFindPath_Click"/>
+        <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="380" Margin="50,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
 
     </Grid>
 </Window>

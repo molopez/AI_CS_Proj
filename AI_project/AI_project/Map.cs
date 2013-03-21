@@ -32,94 +32,12 @@ namespace AI_project
         //To be used if the empty constructor was used
         public void buildMap(string locations, string connections)
         {
+            //clear all collections when building a map
+            clearPreviousData();
+
             setLocations(locations);
             setConnections(connections);
             mapCities();
-        }
-
-        //builds the list with the cities in the path
-        //that we are looking for
-        public void buildPath()
-        {
-            City start, end, nextCity;
-
-            end = getCity(endCity);
-            start = getCity(startCity);
-            nextCity = end;
-
-            while (nextCity.getCityName() != start.getCityName())
-            {
-                path.Add(nextCity.getCityName());
-                nextCity = getCity(nextCity.getPreviousCity());
-            }
-            path.Add(nextCity.getCityName());
-        }
-
-        public void mapCities() //This function sets the locations of cities in a map
-        {
-            string cityName, temp, neighbor; 
-            int numNeighbors;
-
-            //Building vector of cities
-            //initializing the cities using the conections file first
-            for (int i = 0; i < locations.Count; i++)
-            {
-                temp = locations[i];
-               
-                if (temp.CompareTo("END") == 0)
-                    break;
-
-                string[] str = temp.Split(' ');
-
-                City city = new City(str[0], int.Parse(str[1]), int.Parse(str[2]));
-                cities.Add(city);
-
-            }
-
-            //add adjacent cities to each city
-            //iterate through the connections list to add each adjacent(neighbor) city
-            for (int i = 0; i < connections.Count; i++)
-            {
-                temp = connections[i];
-
-                if (temp.CompareTo("END") == 0)
-                    break;
-
-                string[] str = temp.Split(' ');
-                cityName = str[0];
-                numNeighbors = int.Parse(str[1]);
-
-                //find the city to add its neighbors
-                foreach (City city in cities)
-                {
-
-                    temp = city.getCityName();
-
-                    //if this is the city i am on, add its neighbors
-                    if (temp.CompareTo(cityName) == 0)
-                    {
-
-                        //add the neighbors the city has
-                        for (int j = 2; j < numNeighbors; j++)
-                        {
-                            neighbor = str[j];
-
-                            //find the location of the neighbor
-                            foreach (string myNeighbor in locations)
-                            {
-                                temp = myNeighbor;
-                                string[] tNeighbor = temp.Split(' ');
-
-                                //if this is the neighbor, add it to the city
-                                if (tNeighbor[0].CompareTo(neighbor) == 0)
-                                {
-                                  city.addNeighbor(tNeighbor[0], int.Parse(tNeighbor[1]), int.Parse(tNeighbor[2]));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public void printMap()
@@ -135,6 +53,10 @@ namespace AI_project
         //starting city, ending city, city to omit
         public int findPath(string start, string finish, string omit, string heuristicType)
         {
+            this.path.Clear();
+            this.heuristics.Clear();
+            clearCityProperties();
+
             if (heuristicType == "Straight Line Distance")
             {
                 return AStar_StraightLineDistance(start, finish, omit);
@@ -145,9 +67,10 @@ namespace AI_project
 
         //Display the shortest path from one city to another
         //if one is found
-        public void showPath() // Display path found
+        public List<string> showPath() // Display path found
         {
             int j;
+            List<string> myPath = new List<string>();
 
             if (pathFound)
             {
@@ -156,14 +79,17 @@ namespace AI_project
                     j = i + 1;
                     if (j < path.Count)
                     {
-                        Console.WriteLine(path[i] + " -> " + path[j]);
+                        //Console.WriteLine(path[i] + " -> " + path[j]);
+                        myPath.Add(path[i] + " -> " + path[j]);
                     }
                 }
             }
-            else
+            /*else
             {
                 Console.WriteLine("No path was found from: " + startCity + " to: " + endCity);
-            }
+            }*/
+
+            return myPath;
         }
 
         public List<City> getCities()
@@ -182,6 +108,7 @@ namespace AI_project
         private int setLocations(string fileName) //Opens file and capture data into an object
         {
             string line;
+            locations.Clear();
             
             StreamReader streamReader = new StreamReader(fileName);
 
@@ -207,6 +134,7 @@ namespace AI_project
         private int setConnections(string fileName) //Opens a file containing locations and stores in an object
         {
             string line;
+            connections.Clear();
 
             StreamReader streamReader = new StreamReader(fileName);
 
@@ -223,6 +151,76 @@ namespace AI_project
             }
 
             return 0;
+        }
+
+        private void mapCities() //This function sets the locations of cities in a map
+        {
+            string cityName, temp, neighbor;
+            int numNeighbors;
+
+            //Building vector of cities
+            //initializing the cities using the locations file first
+            foreach (string s in locations)
+            {
+                //temp = locations[i];
+
+                if (s.CompareTo("END") == 0)
+                    break;
+
+                string[] str = s.Split(' ');
+
+                City city = new City(str[0], int.Parse(str[1]), int.Parse(str[2]));
+                cities.Add(city);
+
+            }
+
+            //add adjacent cities to each city
+            //iterate through the connections list to add each adjacent(neighbor) city
+            foreach(string s in connections)
+            {
+                //temp = connections[i];
+
+                if (s.CompareTo("END") == 0)
+                    break;
+
+                string[] str = s.Split(' ');
+                cityName = str[0];
+                numNeighbors = int.Parse(str[1]);
+                int j = 2;
+
+                //find the city to add its neighbors
+                foreach (City city in cities)
+                {
+
+                    temp = city.getCityName();
+
+                    //if this is the city i am on, add its neighbors
+                    if (temp.CompareTo(cityName) == 0)
+                    {
+
+                        //add the neighbors the city has
+                        for (int i = 0; i < numNeighbors; i++)
+                        {
+                            neighbor = str[j];
+                            j++;
+
+                            //find the location of the neighbor
+                            foreach (string myNeighbor in locations)
+                            {
+                                //temp = myNeighbor;
+                                string[] tNeighbor = myNeighbor.Split(' ');
+
+                                //if this is the neighbor, add it to the city
+                                if (tNeighbor[0].CompareTo(neighbor) == 0)
+                                {
+                                    city.addNeighbor(tNeighbor[0], int.Parse(tNeighbor[1]), int.Parse(tNeighbor[2]));
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                }
+            }
         }
 
         //Finds the shortest path from one city to another
@@ -373,20 +371,21 @@ namespace AI_project
 		        {
 			        if(it.Key.CompareTo(neighbor) == 0)
 			        {
-				        if(it.Value > heuristicDist)
-				        {
-					        thisNeighbor.setPreviousCity(prevCity);								//let this neighbor know from which city we arrived to it
-					        updatePreviousCity(thisNeighbor);
-		
-					        thisNeighbor.setDistanceTraveled(dt);								 //this is the total distances traveled through this path so far
-					        updateDistanceTraveled(thisNeighbor);
+                        if (it.Value > heuristicDist)
+                        {
+                            thisNeighbor.setPreviousCity(prevCity);								//let this neighbor know from which city we arrived to it
+                            updatePreviousCity(thisNeighbor);
 
-					        added = true;
-					        heuristics.Remove(neighbor);
-					        heuristics.Add(neighbor, heuristicDist);		 //add the city and the heuristic distance to the map structure
-																						         //that is holding our cities to choose a from to form the path
-					        break;
-				        }				
+                            thisNeighbor.setDistanceTraveled(dt);								 //this is the total distances traveled through this path so far
+                            updateDistanceTraveled(thisNeighbor);
+
+                            added = true;
+                            heuristics.Remove(neighbor);
+                            heuristics.Add(neighbor, heuristicDist);		 //add the city and the heuristic distance to the map structure
+                            //that is holding our cities to choose a from to form the path
+                            break;
+                        }
+                        added = true;
 			        }
 		        }
 
@@ -514,6 +513,36 @@ namespace AI_project
 		        city.setDistanceTraveled(0);
 		        city.setPreviousCity("");
 	        }
+        }
+
+        //builds the list with the cities in the path
+        //that we are looking for
+        private void buildPath()
+        {
+            City start, end, nextCity;
+
+            end = getCity(endCity);
+            start = getCity(startCity);
+            nextCity = end;
+
+            while (nextCity.getCityName() != start.getCityName())
+            {
+                path.Add(nextCity.getCityName());
+                nextCity = getCity(nextCity.getPreviousCity());
+            }
+            path.Add(nextCity.getCityName());
+            path.Reverse();
+        }
+
+        private void clearPreviousData()
+        {
+            //clear all collections when building a map
+            this.locations.Clear();
+            this.connections.Clear();
+            this.cities.Clear();
+            this.path.Clear();
+            this.heuristics.Clear();
+            clearCityProperties();
         }
 
         #endregion
