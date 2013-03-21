@@ -14,7 +14,8 @@ namespace AI_project
         private List<City> cities = new List<City>();
         private List<string> path = new List<string>();
         private Dictionary<string, double> heuristics = new Dictionary<string, double>();
-        private string startCity, endCity, omitCity;
+        private string startCity, endCity;
+        private List<string> omitCities = new List<string>();
         bool pathFound;
 
         //Creates the map of the cities
@@ -51,18 +52,20 @@ namespace AI_project
         //Finds the shortest path from one city to another
         //takes as arguments:
         //starting city, ending city, city to omit
-        public int findPath(string start, string finish, string omit, string heuristicType)
+        public int findPath(string start, string finish, List<string> omit, string heuristicType)
         {
             this.path.Clear();
             this.heuristics.Clear();
             clearCityProperties();
+
+            string omitcit = "";
 
             if (heuristicType == "Straight Line Distance")
             {
                 return AStar_StraightLineDistance(start, finish, omit);
             }
             else
-                return AStar_FewestLinks(start, finish, omit);
+                return AStar_FewestLinks(start, finish, omitcit);
         }
 
         //Display the shortest path from one city to another
@@ -74,6 +77,15 @@ namespace AI_project
 
             if (pathFound)
             {
+                //path from starting city to ending city
+                //when they are the same city
+                if (path.Count == 1)
+                {
+                    myPath.Add(path[0] + " -> " + path[0]);
+                    return myPath;
+                }
+
+                //city path
                 for (int i = 0; i < path.Count; i++)
                 {
                     j = i + 1;
@@ -225,9 +237,11 @@ namespace AI_project
 
         //Finds the shortest path from one city to another
         //uses the straight line distance and shortest distance as a heuristic
-        private int AStar_StraightLineDistance(string start, string finish, string omit)
+        //returns 0 if path found
+        //returns -1 if no path is found
+        private int AStar_StraightLineDistance(string start, string finish, List<string> omit)
         {
-	        startCity = start; endCity = finish; omitCity = omit;
+	        startCity = start; endCity = finish; omitCities = omit;
 
 	        bool startExists = false, finishExists = false, omitExists = false;
 
@@ -246,14 +260,29 @@ namespace AI_project
 			        finishExists = true;			
 		        }
 
-		        if(city.getCityName() == omit) // We got the omited city
+		        /*if(city.getCityName() == omit) // We got the omited city
 		        {
 			        city.setOmission(true);
 			        omitExists = true;
-		        }
-		        if(startExists && finishExists && omitExists)
+		        }*/
+
+                
+		        if(startExists && finishExists)
 			        break;
 	        }
+
+            foreach (string str in omitCities) // We got the omited cities
+            {
+                City city = getCity(str);
+                city.setOmission(true);
+                omitExists = true;
+
+                //start city and end city cannot be omitted
+                if (startCity.CompareTo(str) == 0 || endCity.CompareTo(str) == 0)
+                {
+                    return -1;
+                }
+            }
 
 	        {// Response if one of the cities is not in the vector
 		        if(!startExists)

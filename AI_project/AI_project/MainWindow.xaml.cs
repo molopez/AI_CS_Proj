@@ -29,7 +29,9 @@ namespace AI_project
             cbHeuristic.IsEnabled = false;
             cbStartCity.IsEnabled = false;
             cbEndCity.IsEnabled = false;
-            cbOmitCity.IsEnabled = false;
+            //cbOmitCity.IsEnabled = false;
+
+            listboxOmitCities.IsEnabled = false;
 
             btnFindPath.IsEnabled = false;
         }
@@ -81,7 +83,9 @@ namespace AI_project
             cbHeuristic.Items.Clear();
             cbStartCity.Items.Clear();
             cbEndCity.Items.Clear();
-            cbOmitCity.Items.Clear();
+            //cbOmitCity.Items.Clear();
+           
+            listboxOmitCities.Items.Clear();
 
             cbHeuristic.IsEnabled = true;
             cbHeuristic.Items.Add("Straight Line Distance");
@@ -89,7 +93,9 @@ namespace AI_project
 
             cbStartCity.IsEnabled = true;
             cbEndCity.IsEnabled = true;
-            cbOmitCity.IsEnabled = true;
+            //cbOmitCity.IsEnabled = true;
+
+            listboxOmitCities.IsEnabled = true;
 
             List<City> cities = map.getCities();
             List<string> ct = new List<string>();
@@ -103,26 +109,31 @@ namespace AI_project
             //sort the list and fill comboboxes
             ct.Sort();
 
-            cbOmitCity.Items.Add("none");
+            //cbOmitCity.Items.Add("none");
+            listboxOmitCities.Items.Add("none");
            
             foreach (string str in ct)
             {
                 cbStartCity.Items.Add(str);
                 cbEndCity.Items.Add(str);
-                cbOmitCity.Items.Add(str);                
+                //cbOmitCity.Items.Add(str);
+
+                listboxOmitCities.Items.Add(str);
             }
 
             cbHeuristic.SelectedIndex = 0;
             cbStartCity.SelectedIndex = 0;
             cbEndCity.SelectedIndex = 0;
-            cbOmitCity.SelectedIndex = 0;
+            //cbOmitCity.SelectedIndex = 0;
+
+            listboxOmitCities.SelectedIndex = 0;
             
         }
 
         private void cbHeuristic_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
-                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+                && cbEndCity.SelectedIndex != -1 && listboxOmitCities.SelectedIndex != -1)
             {
                 btnFindPath.IsEnabled = true;
             }
@@ -131,7 +142,7 @@ namespace AI_project
         private void cbStartCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
-                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+                && cbEndCity.SelectedIndex != -1 && listboxOmitCities.SelectedIndex != -1)
             {
                 btnFindPath.IsEnabled = true;
             }
@@ -140,34 +151,57 @@ namespace AI_project
         private void cbEndCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
-                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+                && cbEndCity.SelectedIndex != -1 && listboxOmitCities.SelectedIndex != -1)
             {
                 btnFindPath.IsEnabled = true;
             }
         }
 
-        private void cbOmitCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /*private void cbOmitCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbHeuristic.SelectedIndex != -1 && cbStartCity.SelectedIndex != -1
-                && cbEndCity.SelectedIndex != -1 && cbOmitCity.SelectedIndex != -1)
+                && cbEndCity.SelectedIndex != -1 && listboxOmitCities.SelectedIndex != -1)
             {
                 btnFindPath.IsEnabled = true;
             }
-        }
+        }*/
 
         private void btnFindPath_Click(object sender, RoutedEventArgs e)
         {
             txtboxPath.Clear();
+            txtboxPath.Foreground = Brushes.Black;
+
+            List<string> omitCities = new List<string>();
+
+            foreach (string str in listboxOmitCities.SelectedItems)
+            {
+                if (str.CompareTo("none") == 0)
+                    break;
+
+                omitCities.Add(str);
+            }
 
            int x = map.findPath(cbStartCity.SelectedValue.ToString(), cbEndCity.SelectedValue.ToString(),
-                cbOmitCity.SelectedValue.ToString(), cbHeuristic.SelectedValue.ToString());
+                omitCities, cbHeuristic.SelectedValue.ToString());
 
-            List<string> path = map.showPath();
+           if (x == 0)
+           {//path was found, display path
+               List<string> path = map.showPath();
 
-            foreach (string str in path)
-            {
-                txtboxPath.AppendText(str + "\n");
-            }
+               foreach (string str in path)
+               {
+                   txtboxPath.AppendText(str + "\n");
+               }
+           }
+           else
+           {
+               txtboxPath.Foreground = Brushes.Red;
+               txtboxPath.AppendText("no path found from " + cbStartCity.SelectedValue.ToString() +
+                   " -> " + cbEndCity.SelectedValue.ToString() + " \n");
+               txtboxPath.AppendText("Start city or End city might be marked as omited.\n");
+               txtboxPath.AppendText("Please chech your input values.");
+           }
+            listboxOmitCities.SelectedItems.Clear();
         }       
     }
 }

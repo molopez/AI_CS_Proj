@@ -15,12 +15,13 @@
         <TextBlock x:Name="txtSelCities" HorizontalAlignment="Left" Margin="692,92,0,0" TextWrapping="Wrap" Text="Select cities to find path" VerticalAlignment="Top"/>
         <ComboBox x:Name="cbStartCity" HorizontalAlignment="Left" Margin="610,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbStartCity_SelectionChanged"/>
         <ComboBox x:Name="cbEndCity" HorizontalAlignment="Left" Margin="753,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbEndCity_SelectionChanged"/>
-        <ComboBox x:Name="cbOmitCity" HorizontalAlignment="Left" Margin="906,128,0,0" VerticalAlignment="Top" Width="66" SelectionChanged="cbOmitCity_SelectionChanged"/>
         <TextBlock x:Name="txtStartCity" HorizontalAlignment="Left" Margin="569,132,0,0" TextWrapping="Wrap" Text="Start" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtEndCity" HorizontalAlignment="Left" Margin="718,132,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtOmitCity" HorizontalAlignment="Left" Margin="864,131,0,0" TextWrapping="Wrap" Text="Omit" VerticalAlignment="Top"/>
         <Button x:Name="btnFindPath" Content="Find Path" HorizontalAlignment="Left" Margin="154,128,0,0" VerticalAlignment="Top" Width="75" Click="btnFindPath_Click"/>
         <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="380" Margin="50,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
+        <ListBox x:Name="listboxOmitCities" HorizontalAlignment="Left" Height="70" Margin="909,104,0,0" VerticalAlignment="Top" Width="66" SelectedIndex="0" SelectionMode="Extended"/>
 
     </Grid>
+
 </Window>
