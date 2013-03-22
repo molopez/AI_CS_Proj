@@ -128,14 +128,8 @@ namespace AI_project
 
             listboxOmitCities.SelectedIndex = 0;
 
-            Point point = new Point(320, 240);
-            Rectangle rec = new Rectangle();
-            rec.Width = 1;
-            rec.Height = 1;
-            canvasMap.Children.Add(rec);
-            Canvas.SetTop(rec, 20);
-            Canvas.SetLeft(rec, 20);
-            
+            fillCanvas();
+           
         }
 
         private void cbHeuristic_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -200,6 +194,8 @@ namespace AI_project
                {
                    txtboxPath.AppendText(str + "\n");
                }
+
+               updateCanvas(path, map.getCities());
            }
            else
            {
@@ -210,6 +206,154 @@ namespace AI_project
                txtboxPath.AppendText("Please chech your input values.");
            }
             listboxOmitCities.SelectedItems.Clear();
-        }       
+        }
+
+        //draw content on the canvas
+        private void fillCanvas()
+        {
+            Dictionary<string, Polygon> myCityMap = new Dictionary<string, Polygon>();
+            myCityMap = createCityPoints(map.getCities());
+            canvasMap.Children.Clear();
+            
+            Dictionary<string, Line> myCityConn = new Dictionary<string, Line>();
+            myCityConn = createLines(map.getCityNeighbors());
+
+            foreach (KeyValuePair<string, Line> l in myCityConn)
+            {
+                canvasMap.Children.Add(l.Value);
+            }
+
+            foreach (KeyValuePair<string, Polygon> p in myCityMap)
+            {
+                canvasMap.Children.Add(p.Value);
+                //Label lbl = new Label();
+                //lbl.Content = p.Key;
+                //canvasMap.Children.Add(lbl);
+            }
+
+            
+        }
+
+        //update path on the canvas
+        private void updateCanvas(List<string> path, List<City> cities)
+        {
+            canvasMap.Children.Clear();
+            fillCanvas();
+
+            foreach (string str in path)
+            {
+                string[] s = str.Split(' ');
+
+                foreach (City city in cities)
+                {
+                    if(s[0].CompareTo(city.getCityName()) == 0)
+                    {
+                        foreach (City c in cities)
+                        {
+                            if(s[2].CompareTo(c.getCityName()) == 0)
+                            {
+                                Polygon p = new Polygon();
+                                p.Stroke = Brushes.Red;
+                                p.Fill = Brushes.Red;
+                                p.StrokeThickness = 5;
+                                p.HorizontalAlignment = HorizontalAlignment.Left;
+                                p.VerticalAlignment = VerticalAlignment.Center;
+                                p.Points = new PointCollection() { new Point(city.getXCoordinate(), city.getYCoordinate()), 
+                                        new Point(city.getXCoordinate(), city.getYCoordinate()) };
+                                canvasMap.Children.Remove(p);
+                                canvasMap.Children.Add(p);
+
+                                Polygon p2 = new Polygon();
+                                p.Stroke = Brushes.Red;
+                                p.Fill = Brushes.Red;
+                                p.StrokeThickness = 5;
+                                p.HorizontalAlignment = HorizontalAlignment.Left;
+                                p.VerticalAlignment = VerticalAlignment.Center;
+                                p.Points = new PointCollection() { new Point(c.getXCoordinate(), c.getYCoordinate()), 
+                                        new Point(c.getXCoordinate(), c.getYCoordinate()) };
+                                canvasMap.Children.Remove(p);
+                                canvasMap.Children.Add(p);
+
+                                Line l = new Line();
+                                l.Stroke = Brushes.Yellow;
+                                l.StrokeThickness = 1;
+                                l.X1 = city.getXCoordinate();
+                                l.Y1 = city.getYCoordinate();
+                                l.X2 = c.getXCoordinate();
+                                l.Y2 = c.getYCoordinate();
+                                canvasMap.Children.Remove(l);
+                                canvasMap.Children.Add(l);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        //create cities as points 
+        Dictionary<string, Polygon> createCityPoints(List<City> cities)
+        {
+            string name = "";
+            Polygon p;
+            Dictionary<string, Polygon> myCityMap = new Dictionary<string, Polygon>();
+
+            foreach (City city in cities)
+            {
+                name = city.getCityName();
+                p = new Polygon();
+                p.Stroke = Brushes.Blue;
+                p.Fill = Brushes.Blue;
+                p.StrokeThickness = 5;
+                p.HorizontalAlignment = HorizontalAlignment.Left;
+                p.VerticalAlignment = VerticalAlignment.Center;
+                p.Points = new PointCollection() { new Point(city.getXCoordinate(), city.getYCoordinate()), 
+                    new Point(city.getXCoordinate(), city.getYCoordinate()) };
+                
+                myCityMap.Add(name, p);
+
+                /*TextBlock cName = new TextBlock();
+                cName.Text = name;
+                cName.Height = 1000;
+                canvasMap.Children.Add(cName);
+                Canvas.SetLeft(cName, city.getXCoordinate() + 5);
+                Canvas.SetTop(cName, city.getYCoordinate() + 5);*/
+                
+
+
+            }
+
+            return myCityMap;
+        }
+
+        Dictionary<string, Line> createLines(Dictionary<City, List<City>> cities)
+        {
+            string name = "";
+            Line l;
+            Dictionary<string, Line> myCityConn = new Dictionary<string,Line>();
+
+            foreach(KeyValuePair<City, List<City>> city in cities)
+            {
+                
+
+                foreach (City c in city.Value)
+                {
+                    name = "";
+                    name += city.Key.getCityName() + "to" + c.getCityName();
+                    l = new Line();
+                    l.Stroke = Brushes.LightBlue;
+                    l.StrokeThickness = 1;
+                    l.X1 = city.Key.getXCoordinate();
+                    l.Y1 = city.Key.getYCoordinate();
+                    l.X2 = c.getXCoordinate();
+                    l.Y2 = c.getYCoordinate();
+
+                    myCityConn.Add(name, l);
+                }
+                
+            }
+            return myCityConn;  
+        }
     }
 }

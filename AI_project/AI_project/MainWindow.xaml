@@ -22,10 +22,12 @@
         <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="408" Margin="50,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
         <ListBox x:Name="listboxOmitCities" HorizontalAlignment="Left" Height="70" Margin="909,104,0,0" VerticalAlignment="Top" Width="66" SelectedIndex="0" SelectionMode="Extended"/>
         <TextBlock HorizontalAlignment="Left" Margin="301,10,0,0" TextWrapping="Wrap" Text="Program finds a path from one node to another node using  the specified heuristic" VerticalAlignment="Top" FontStyle="Oblique" FontWeight="ExtraBold"/>
-        <Canvas x:Name="canvasMap" HorizontalAlignment="Left" Height="460" VerticalAlignment="Top" Width="873" Margin="254,207,0,0">
-            <Rectangle x:Name="rectangle" Stroke="DarkGreen" StrokeThickness="3"/>
-        </Canvas>
 
+
+        <ScrollViewer HorizontalAlignment="Left" Height="auto" Margin="240,204,0,0" VerticalAlignment="Top" Width="auto"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Canvas x:Name="canvasMap" HorizontalAlignment="Left" Height="1000" VerticalAlignment="Top" Width="1000"  />
+        </ScrollViewer>
     </Grid>
 
 </Window>
