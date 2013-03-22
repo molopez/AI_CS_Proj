@@ -9,11 +9,30 @@ namespace AI_project
 {
      class Map
     {
+         class Pair
+         {
+             public Pair()
+             {
+                 X = 0.0;
+                 Y = 0;
+             }
+
+             public Pair(double x, int y)
+             {
+                 X = x;
+                 Y = y;
+             }
+
+             public double X { get; set; }
+             public int Y { get; set; }
+         }
+
         private List<string> locations = new List<string>();
         private List<string> connections = new List<string>();
         private List<City> cities = new List<City>();
         private List<string> path = new List<string>();
         private Dictionary<string, double> heuristics = new Dictionary<string, double>();
+        private List<Dictionary<string, Pair>> pathList = new List<Dictionary<string, Pair>>();
         private string startCity, endCity;
         private List<string> omitCities = new List<string>();
         bool pathFound;
@@ -346,9 +365,107 @@ namespace AI_project
 
         //Finds the shortest path from one city to another
         //uses the minimum number of hops as a heuristic
-        private int AStar_FewestLinks(string start, string finish, string omit)
+        private int AStar_FewestLinks(string iniCity, string endCity, string excluded)
         {
-            Console.WriteLine("not implemented yet!");
+            int i = 1, shortestPath = 0, it = 0;
+            List<int> shortestPathIndex = new List<int>();
+            double sld, min = 0.0;  //sld - straight line distance
+            string cityKey = "";    //name of city with 
+            bool added = false, equalLengthPaths;
+            // 1- Go to smallest amount of hops
+            // 2 - If same amount of hops, go by sld
+            // 3 - If hops get repeated in a path, eliminate path with hop in a later position
+            // 4 - If hops get repeated and are in the same path position, eliminate the path with larger previous sld.
+
+            City beginCity = getCity(iniCity);									 //get the initial city
+            City endingCity = getCity(endCity); 								 //get the ending city
+            City excludedCity = null;
+
+            if (excluded != "none")
+                excludedCity = getCity(excluded);
+
+            foreach (KeyValuePair<string, double> city in beginCity.getNeighbors())
+            {
+                sld = heuristicDistance(getCity(city.Key), endingCity);					 //find the straigh line distance form the neighbor city to the ending city
+                Dictionary<string, Pair> neighborCity = new Dictionary<string, Pair>();
+                Pair localPair = new Pair(sld, i);
+                neighborCity.Add(city.Key, localPair);
+                pathList.Add(neighborCity);                                       //
+            }
+
+            while (true)
+            {
+                foreach (Dictionary<string, Pair> cityList in pathList)     //iterating through the possible paths
+                {
+                    //AT THIS LEVEL NEED CODE TO CAPTURE THE PATH WITH SMALLEST AMOUNT OF HOPS FIRST, if-else?
+                    //AND THEN IF ALL PATHS HAVE THE SAME AMOUNT OF HOPS FIND THE CITY WITH SMALLEST 'sld'
+                    foreach (KeyValuePair<string, Pair> city in cityList)
+                    {
+                        city.Value.Y = cityList.Count(); //updating number of hops
+                    }
+
+                    shortestPath = pathList[0].Count();
+                    equalLengthPaths = true;
+                    shortestPathIndex.Clear();
+                    for (it = 0; it < pathList.Count(); it++)
+                    {
+                        if (pathList[it].Count() < shortestPath)
+                        {
+                            shortestPath = pathList[it].Count();        //knowing which of the paths is smaller
+                            shortestPathIndex.Add(it);                  //and where is/are such path(s) located
+                            equalLengthPaths = false;                   //There exists at least a path which is smaller
+                        }
+                    }
+
+                    //If there is more than one path with the same amount of hops
+                    //then find the one with the smaller 'sld' and get the neighbors (handle case in which the sld's are equal)
+                    //else if there is only one path with the smaller amount of hops goto it and get the neighbors
+                    //else find the one with the smaller 'sld' and get the neighbors (handle case in which the sld's are equal)
+                    foreach (KeyValuePair<string, Pair> city in cityList)   //iterating through the cities to find the city with smallest sld
+                    {
+                        if (city.Value.X <= min && /*revise this section's logic*/city.Value.Y <= i)
+                        {
+                            min = city.Value.X;             //saving the smallest distance between the a city and the destination
+                            cityKey = city.Key;             //saving the name of the city with the smallest distance between itself and destination city
+                        }
+                    }
+                }
+
+                foreach (Dictionary<string, Pair> cityList in pathList)
+                {
+                    foreach (KeyValuePair<string, Pair> city in cityList)
+                    {
+                        if (cityKey == city.Key)
+                        {
+                            City tempLocalCity = getCity(cityKey);       //accessing city with smallest distance between itself and destination city
+
+                            if (tempLocalCity.getNeighbors().Count == 0)
+                            {
+                                tempLocalCity.setDeadEnd(true);
+                                break;
+                            }
+
+                            foreach (KeyValuePair<string, double> neighborCity in tempLocalCity.getNeighbors())
+                            {
+                                sld = heuristicDistance(getCity(city.Key), endingCity);
+                                Dictionary<string, Pair> tempNeighborCitySet = new Dictionary<string, Pair>();
+                                Pair tempLocalPair = new Pair(sld, i + 1);
+                                foreach (Dictionary<string, Pair> listOfCities in pathList)
+                                {
+                                    //Add previous cities to temp Dictionary List first and then add the final
+                                    foreach (KeyValuePair<string, Pair> tempCity in listOfCities)
+                                    {
+                                        tempNeighborCitySet.Add(tempCity.Key, tempCity.Value);
+                                    }
+                                }
+                                //tempNeighborCity.Add(city.Key, tempLocalPair);
+                                //pathList.Add(tempNeighborCity);                                       //
+                            }
+                        }
+                    }
+                }
+            }
+
             return 0;
         }
 

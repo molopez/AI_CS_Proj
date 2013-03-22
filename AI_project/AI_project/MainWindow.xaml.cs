@@ -127,6 +127,14 @@ namespace AI_project
             //cbOmitCity.SelectedIndex = 0;
 
             listboxOmitCities.SelectedIndex = 0;
+
+            Point point = new Point(320, 240);
+            Rectangle rec = new Rectangle();
+            rec.Width = 1;
+            rec.Height = 1;
+            canvasMap.Children.Add(rec);
+            Canvas.SetTop(rec, 20);
+            Canvas.SetLeft(rec, 20);
             
         }
 

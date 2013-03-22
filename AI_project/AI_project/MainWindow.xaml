@@ -1,7 +1,7 @@
 ﻿<Window x:Class="AI_project.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AStar" Height="689" Width="1122">
+        Title="AStar" Height="733.776" Width="1177.224">
     <Grid>
         <Button x:Name="btnLoc" Content="Select" HorizontalAlignment="Left" Margin="457,49,0,0" VerticalAlignment="Top" Width="78" Click="Button_Click_1"/>
         <Button x:Name="btnConn" Content="Select" HorizontalAlignment="Left" Margin="457,86,0,0" VerticalAlignment="Top" Width="78" Click="btnConn_Click"/>
@@ -19,9 +19,12 @@
         <TextBlock x:Name="txtEndCity" HorizontalAlignment="Left" Margin="718,132,0,0" TextWrapping="Wrap" Text="End" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtOmitCity" HorizontalAlignment="Left" Margin="864,131,0,0" TextWrapping="Wrap" Text="Omit" VerticalAlignment="Top"/>
         <Button x:Name="btnFindPath" Content="Find Path" HorizontalAlignment="Left" Margin="154,128,0,0" VerticalAlignment="Top" Width="75" Click="btnFindPath_Click"/>
-        <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="380" Margin="50,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
+        <TextBox x:Name="txtboxPath" HorizontalAlignment="Left" Height="408" Margin="50,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
         <ListBox x:Name="listboxOmitCities" HorizontalAlignment="Left" Height="70" Margin="909,104,0,0" VerticalAlignment="Top" Width="66" SelectedIndex="0" SelectionMode="Extended"/>
         <TextBlock HorizontalAlignment="Left" Margin="301,10,0,0" TextWrapping="Wrap" Text="Program finds a path from one node to another node using  the specified heuristic" VerticalAlignment="Top" FontStyle="Oblique" FontWeight="ExtraBold"/>
+        <Canvas x:Name="canvasMap" HorizontalAlignment="Left" Height="460" VerticalAlignment="Top" Width="873" Margin="254,207,0,0">
+            <Rectangle x:Name="rectangle" Stroke="DarkGreen" StrokeThickness="3"/>
+        </Canvas>
 
     </Grid>
 
